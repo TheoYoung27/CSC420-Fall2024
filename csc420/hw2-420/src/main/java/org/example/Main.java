@@ -39,14 +39,16 @@ public class Main extends JPanel implements ActionListener {
         JLabel bg = new JLabel();
         canvas = new CanvasPanel();
         canvas.setPreferredSize(new Dimension(300, 200));
-        vtclSlider = new JSlider(JSlider.VERTICAL,0,100,0);
-        hztlSlider = new JSlider(JSlider.HORIZONTAL, 0, 100, 0);
+        vtclSlider = new JSlider(JSlider.VERTICAL,0,200,0);
+        vtclSlider.setPreferredSize(new Dimension(15, 214));
+        hztlSlider = new JSlider(JSlider.HORIZONTAL, 0, 300, 0);
+        hztlSlider.setPreferredSize(new Dimension(314, 15));
         add(bg);
         add(colorList, "cell 0 1");
-        add(button, "cell 1 1");
-        add(vtclSlider, "cell 0 2");
+        add(button, "cell 0 1");
+        add(vtclSlider, "cell 0 2, growy");
         add(canvas, "cell 0 2");
-        add(hztlSlider, "cell 0 3");
+        add(hztlSlider, "cell 0 3, gapx 15");
     }
 
     @Override
@@ -65,20 +67,9 @@ public class Main extends JPanel implements ActionListener {
             if(showingCircle){
                 g.setColor(Color.decode(colorCodes[colorList.getSelectedIndex()]));
                 int diameter = 10;
-                double x = (hztlSlider.getValue()/100.0)*canvas.getWidth();
-                double y = -(vtclSlider.getValue()/100.0)*canvas.getHeight() + canvas.getHeight();
-                if(y > canvas.getHeight() - 10){
-                    y = canvas.getHeight() - 10;
-                }
-                if(x > canvas.getWidth() - 10){
-                    x = canvas.getWidth() - 10;
-                }
-                System.out.println("vtcl value:" + vtclSlider.getValue());
-                System.out.println("hztl value:" + hztlSlider.getValue());
-                System.out.println("x value:" + x);
-                System.out.println("y value:" + y);
-
-                g.fillOval((int)x, (int)y, diameter, diameter);
+                int x = hztlSlider.getValue()  - diameter / 2;
+                int y = canvas.getHeight() - vtclSlider.getValue() - diameter / 2;
+                g.fillOval(x, y, diameter, diameter);
             }
         }
     }
@@ -94,7 +85,6 @@ public class Main extends JPanel implements ActionListener {
         frame.setVisible(true);
     }
     public static void main(String[] args) {
-        System.out.println("hello");
         javax.swing.SwingUtilities.invokeLater(new Runnable(){
             public void run(){
                 createAndShowGUI();
